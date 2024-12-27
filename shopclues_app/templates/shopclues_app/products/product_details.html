@@ -1,0 +1,181 @@
+{% extends 'shopclues_app/layouts/base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Shopclues || {{ product.name }} Details {% endblock title %}</title>
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
+    {% endblock extra_css %}
+</head>
+<body>
+    {% block content %}
+    <section class="bg-light py-4 my-5" style="min-height: 600px;">
+        <div class="container">
+            <div class="row" style="margin-top: 100px !important;">
+                <div class="col-12">
+                    <h4 class="mb-3">Product Details</h4>
+                    <hr style="border-color: #b8bfc2;">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                          <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                          <li class="breadcrumb-item"><a href="{% url 'collection_view' category.id %}">{{ category.name }}</a></li>
+                          <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+                        </ol>
+                    </nav>
+                    {% include 'shopclues_app/include/Messages.html'%}
+                </div>
+
+                <div class="col-3 my-3 pic-box" style="border: 1px solid black; position: relative;">
+                    <div class="center-image pic-box">
+                        <div style="position: absolute; top: 5px; right: 10px;" class="hot">Hot</div>
+                        <img src="{{ product.product_image.url }}" alt="{{ product.name }}">
+                    </div>
+                </div>
+
+                <div class="col-8 my-3 py-4" style="margin-left: 60px;">
+                    <h5>{{ product.name }}</h5>
+                    <p class="my-2">{{ product.vender }}</p>
+                    <p class="my-2 fs-5 text-primary font-weight-bold">{{ product.description }}</p>
+                    <h6 class="my-3" style="font-size: 25px;">
+                        ₹{{ product.selling_price }} 
+                        <span class="text-muted" style="text-decoration: line-through; font-size: 18px;">MRP: ₹{{ product.original_price }}</span>
+                    </h6>
+                    <h6 class="fs-8">Inclusive of all taxes</h6>
+                    <div class="my-4">
+                        {% csrf_token %}
+                        {% if product.quantity > 0 %}
+                        <input type="hidden" value="{{product.id}}" id="pid">
+                        <div class="input-group my-2" style="width: 150px;">
+                            <button class="input-group-text bg-success text-light" id="btnMinus"><i class="fas fa-minus"></i></button>
+                            <input type="text" name="qty" id="txtQty" value="1" class="form-control text-center">
+                            <button class="input-group-text bg-success text-light" id="btnPlus"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <button class="btn btn-primary" id="btnCart"> <i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                        {% else %}
+                        <button class="btn btn-danger"> <i class="fas fa-minus"></i> Out of Stock</button>
+                        {% endif %}
+                        <button class="btn btn-danger" id="btnFav"> <i class="fas fa-heart"></i> Add to Wishlist</button>
+                        <h6 class="my-3">
+                            <span><i class="fas fa-check text-primary"></i> COD Available</span>
+                            <span><i class="fas fa-check text-primary"></i> Free Shipping Delivered</span>
+                            <span><i class="fas fa-check text-primary"></i> 2-5 Business Days</span>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function(event) {
+    const btnPlus = document.getElementById("btnPlus");
+    const btnMinus = document.getElementById("btnMinus");
+    const txtQty = document.getElementById("txtQty");
+    const pid = document.getElementById("pid");
+    const btnCart = document.getElementById("btnCart");
+    const btnFav = document.getElementById("btnFav"); // Single selection for the fav button
+
+    // Ensure CSRF token is properly rendered in the HTML
+    const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+    // Handle Increase
+    btnPlus.addEventListener("click", function() {
+        let qty = parseInt(txtQty.value, 10);
+        qty = isNaN(qty) ? 0 : qty;
+        if (qty < 10) {
+            qty++;
+            txtQty.value = qty;
+        }
+    });
+
+    // Handle Decrease
+    btnMinus.addEventListener("click", function() {
+        let qty = parseInt(txtQty.value, 10);
+        qty = isNaN(qty) ? 0 : qty;
+        if (qty > 1) {
+            qty--;
+            txtQty.value = qty;
+        }
+    });
+
+    // Handle Add to Cart
+    btnCart.addEventListener("click", function() {
+        let qty = parseInt(txtQty.value, 10);
+        qty = isNaN(qty) ? 0 : qty;
+        if (qty > 0) {
+            const postObj = {
+                'product_qty': qty,
+                'pid': pid.value
+            };
+            console.log("Sending data to the server:", postObj); // Log the data
+
+            fetch("{% url 'addtocart' %}", {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json'  // Make sure Content-Type is set to application/json
+                },
+                body: JSON.stringify(postObj)  // Ensure the data is stringified
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.status === "Product added to cart") {
+                    alert('Item added to cart');
+                } else {
+                    alert(data.status);  // Show specific status from the response
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while adding to the cart');
+            });
+        } else {
+            alert("Please Enter a Quantity");
+        }
+    });
+
+    // Handle Add to Wishlist (corrected)
+    btnFav.addEventListener("click", function() {
+        const postObj = { 'pid': pid.value };
+        console.log("Sending data to the server:", postObj);
+
+        fetch("{% url 'fav' %}", {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postObj)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.status === "Product added to wishlist") {
+                alert('Item added to wishlist');
+            } else {
+                alert(data.status);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while adding to the wishlist');
+        });
+    });
+});
+
+    </script>
+
+    {% endblock content %}
+</body>
+</html>

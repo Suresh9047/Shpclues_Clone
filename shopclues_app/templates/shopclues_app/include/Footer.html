@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block extra_css%}
+    <link rel="stylesheet" href="{ static 'css/Home.css'}">
+    {% endblock extra_css%}
+    <style>
+      footer {
+    background-color: #343a40; /* Dark background */
+    color: #fff; /* White text */
+  }
+  footer a {
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+  
+  footer .list-inline-item {
+    margin-right: 10px;
+  }
+  
+  footer .form-control {
+    border-radius: 0;
+  }
+  
+    </style>
+</head>
+<body>
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+          <div class="row">
+            <!-- About Us Section -->
+            <div class="col-md-3">
+              <h5>About ShopClues</h5>
+              <p>Your one-stop online shop for all your needs, offering the best prices and deals on a wide range of products.</p>
+            </div>
+      
+            <!-- Customer Support Section -->
+            <div class="col-md-3">
+              <h5>Customer Support</h5>
+              <ul class="list-unstyled">
+                <li><a href="#" class="text-white">FAQs</a></li>
+                <li><a href="#" class="text-white">Returns</a></li>
+                <li><a href="#" class="text-white">Shipping Info</a></li>
+                <li><a href="#" class="text-white">Contact Us</a></li>
+              </ul>
+            </div>
+      
+            <!-- Social Media Section -->
+            <div class="col-md-3">
+              <h5>Follow Us</h5>
+              <ul class="list-inline">
+                <li class="list-inline-item"><a href="#" class="text-white">Facebook</a></li>
+                <li class="list-inline-item"><a href="#" class="text-white">Twitter</a></li>
+                <li class="list-inline-item"><a href="#" class="text-white">Instagram</a></li>
+              </ul>
+            </div>
+      
+            <!-- Newsletter Signup Section -->
+            <div class="col-md-3">
+              <h5>Stay Updated</h5>
+              <form>
+                <div class="mb-2">
+                  <input type="email" class="form-control" placeholder="Enter your email">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
+              </form>
+            </div>
+          </div>
+      
+          <hr class="bg-light">
+      
+          <!-- Footer Bottom -->
+          <div class="text-center">
+            <p class="mb-0">&copy; 2024 ShopClues. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+      
+</body>
+</html>

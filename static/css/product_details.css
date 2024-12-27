@@ -1,0 +1,48 @@
+
+footer {
+    background-color: #343a40; /* Dark background */
+    color: #fff; /* White text */
+  }
+  
+  footer a {
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+  
+  footer .list-inline-item {
+    margin-right: 10px;
+  }
+  
+  footer .form-control {
+    border-radius: 0;
+  }
+
+
+  .center-image {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;    /* Centers vertically */
+    height: 100%;           /* Optional: Set a height for better centering */
+}
+
+.center-image img {
+    max-width: 100%; /* Ensures the image scales properly */
+    max-height: 100%; /* Ensures the image stays within the container */
+    object-fit: contain; /* Adjusts the image to fit without distortion */
+}
+
+  
+.pic-box
+.hot
+{
+background-color: orangered;
+color: white;
+font-weight: bold;
+display: inline-block;
+border-radius: 5px;
+padding: 5px;
+
+}

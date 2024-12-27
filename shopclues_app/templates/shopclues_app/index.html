@@ -1,0 +1,66 @@
+{% extends 'shopclues_app/layouts/base.html' %}
+{% load static %}
+
+<title>{% block title %}Shopclues || Index Page{% endblock title %}</title>
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/Home.css' %}">
+<style>
+    .trending-carousel .carousel-item {
+        display: flex;
+        justify-content: center;
+    }
+    .trending-carousel .card {
+        margin: 0 15px;
+        width: 18rem;
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container" style="margin-top: 60px; z-index: 9;">
+    <div class="row">
+        <div class="col-10" style="margin-top: 100px;">
+            {% include 'shopclues_app/include/slider.html' %}
+        </div>
+        <!-- Vertical Scrollable Categories Section -->
+        <div class="col-2" style="margin-top: 120px !important;">
+            <div class="category-slider" style="max-height: 400px; overflow-y: scroll; border: 1px solid #ddd;">
+                {% for cat in category %}
+                <div class="category-item">
+                    <a href="{% url 'collection_view' cat.id %}" style="text-decoration: none;">
+                        <img src="{{ cat.image.url }}" class="card-img-top card-img" alt="{{ cat.name }}" style="height: 180px; width: 140px; margin: 20px auto; display: block;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ cat.name }}</h5>
+                            <p class="card-text">{{ cat.description }}</p>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <div class="row " >
+        <h1 class="fs-5 text-primary my-3">Trending Products</h1>
+        {% for item in products %}
+        <div class="col-md-3 col-lg-3 text-center">
+            <a href="{% url 'product_details' item.category.id item.id %}" style="text-decoration: none;">
+                <div class="card my-3">
+                    <img src="{{ item.product_image.url }}" class="card-img-top" style="height: 150px; width: 140px; margin: 50px;" alt="{{ item.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ item.name }}</h5>
+                        <p class="card-text">
+                            <span class="new-price" style="text-decoration: line-through;">₹ {{ item.original_price|floatformat:2 }}</span>
+                            <span class="old-price">₹ {{ item.selling_price|floatformat:2 }}</span>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div> <!-- Closing row -->
+</div>
+
+{% endblock content %}

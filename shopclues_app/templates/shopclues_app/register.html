@@ -1,0 +1,68 @@
+{% extends 'shopclues_app/layouts/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Register || Shopclues{% endblock title %}</title>
+</head>
+<body>
+    {% block content %}
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12" style="margin-top: 40px;">
+                <h4>Register Page</h4>
+                <hr style="border-color: #b8bfc2;">
+            </div>
+        </div>
+        <section class="py-4 my-5">
+            <div class="container">
+                <div class="row">
+                    <!-- Registration Form -->
+                    <div class="col-md-6">
+                        <form method="post" action="{% url 'register' %}">
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <label for="id_username" class="form-label">User Name</label>
+                                {{ form.username }}
+                                {% if form.errors.username %}
+                                <small class="text-danger">{{ form.errors.username }}</small>
+                                {% endif %}
+                            </div>
+                            <div class="mb-4">
+                                <label for="id_email" class="form-label">Email</label>
+                                {{ form.email }}
+                                {% if form.errors.email %}
+                                <small class="text-danger">{{ form.errors.email }}</small>
+                                {% endif %}
+                            </div>
+                            <div class="mb-4">
+                                <label for="id_password1" class="form-label">Password</label>
+                                {{ form.password1 }}
+                                {% if form.errors.password1 %}
+                                <small class="text-danger">{{ form.errors.password1 }}</small>
+                                {% endif %}
+                            </div>
+                            <div class="mb-4">
+                                <label for="id_password2" class="form-label">Confirm Password</label>
+                                {{ form.password2 }}
+                                {% if form.errors.password2 %}
+                                <small class="text-danger">{{ form.errors.password2 }}</small>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+                        <p class="my-2">Already a User? <a href="{% url 'login' %}">Login Now</a></p>
+                    </div>
+
+                    <!-- Placeholder for Additional Content -->
+                    <div class="col-md-6">
+                        <!-- Optionally include images or promotional content here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    {% endblock content %}
+</body>
+</html>
