@@ -1,0 +1,64 @@
+.navbar {
+    background-color: white; /* ShopClues blue */
+  }
+  .navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #0070c0 !important;
+  }
+
+  .search-bar {
+  max-width: 600px !important;
+  width: 100% !important;
+  margin-top: 40px;
+   
+  }
+  .cart-icon {
+    color: #fff;
+    margin-left: 15px;
+  }
+
+
+  /* Align navbar items */
+  .navbar .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Spacing adjustments for the navbar links */
+  .navbar-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-nav .nav-item {
+    margin-left: 20px; /* Space between items */
+  }
+
+  /* Adjustments for login/register for better placement */
+  .auth-links {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Styling for buttons to make them look good */
+  .auth-links .nav-link {
+    margin-left: 10px;
+    padding: 8px 15px;
+    border-radius: 25px;
+    background-color: #f8f9fa;
+    color: #0070c0;
+  }
+
+ .icon{
+    font-size: 30px;
+    color: #0070c0 !important;
+  }
+
+  .navs{
+    background-color: #0070c0;
+    height: 50px;
+    width: 100%;
+    z-index: 8;
+  }
